@@ -10,6 +10,7 @@ file = "/Users/Fredrik/Documents/Skole/H19/TDT4117/TDT4117_Assignmet3/pg3300.txt
 solution = "/Users/Fredrik/Documents/Skole/H19/TDT4117/TDT4117_Assignmet3/solutions.txt"
 
 # Task 1.0
+stemmer = PorterStemmer()
 random.seed(123)
 
 # Task 1.1
@@ -46,11 +47,10 @@ def tokenizeParagraphs(paragraphs):
 
 # Task 1.5
 def lower(paragraphs):
-    word = []
-    for i, p in enumerate(paragraphs):
+    for p in paragraphs:
         for w in p:
-            word.append(w.lower())
-    return word
+            p.append(w.lower())
+    return paragraphs
 
 def removePunctuation(words):
     cword = []
@@ -67,13 +67,22 @@ def removePunctuation(words):
             cword.append(w)
     return cword
 
-def splitWords(paragraphs):
+def getParagraphs(paragraphs):
     for i, words in enumerate(paragraphs):
         words = removePunctuation(words)
         paragraphs[i] = words
     return paragraphs
 
+# Task 1.6
+def stemWords(paragraphs):
+    stemmedP = []
+    for p in paragraphs:
+        stemmedW = []
+        for w in p:
+            stemmed.append(stemmer.stem(w).lower())
+    return paragraphs
 
+# Task 1.7
 
 # Task 1 - solutions
 
@@ -81,6 +90,7 @@ textFile = paragraphSplitter(file)
 paragraphList = wordRemover(textFile, "Gutenberg")
 paragraphList = tokenizeParagraphs(paragraphList)
 paragraphList = lower(paragraphList)
-paragraphList = removePunctuation(paragraphList)
 
-print(paragraphList)
+
+print(paragraphList[1])
+
