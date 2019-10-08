@@ -47,25 +47,27 @@ def tokenizeParagraphs(paragraphs):
 
 # Task 1.5
 def lower(paragraphs):
+    paras_lowered = []
     for p in paragraphs:
+        word_lowered = []
         for w in p:
-            p.append(w.lower())
-    return paragraphs
+            word_lowered.append(w.lower())
+        paras_lowered.append(word_lowered)
+    return paras_lowered
 
-def removePunctuation(words):
-    cword = []
-    for word in words:
-        w = ""
-        for letter in word:
-            if(string.punctuation + "\n\r\t").__contains__(letter):
-                if w != "":
-                    cword.append(w)
-                    w = ""
-                continue
-            w += letter
-        if w != "":
-            cword.append(w)
-    return cword
+def removePunctuation(paragraphs):
+    paras = []
+    for p in paragraphs:
+        words = []
+        for word in p:
+            temp = word.replace('\r\n', ' ')
+            templist = temp.split(' ')
+            for i in templist:
+                words.append(i)
+        paras.append(words)
+    return paras
+
+
 
 def getParagraphs(paragraphs):
     for i, words in enumerate(paragraphs):
@@ -90,7 +92,7 @@ textFile = paragraphSplitter(file)
 paragraphList = wordRemover(textFile, "Gutenberg")
 paragraphList = tokenizeParagraphs(paragraphList)
 paragraphList = lower(paragraphList)
+paragraphList = removePunctuation(paragraphList)
 
-
-print(paragraphList[1])
+print(paragraphList[1200])
 
