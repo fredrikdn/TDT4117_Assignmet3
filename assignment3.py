@@ -5,13 +5,14 @@ import nltk
 import string
 from nltk.stem.porter import PorterStemmer
 from nltk.probability import FreqDist
-import re
 
 
 tex_file = "/Users/Fredrik/Documents/Skole/H19/TDT4117/TDT4117_Assignmet3/pg3300.txt"
 solution = "/Users/Fredrik/Documents/Skole/H19/TDT4117/TDT4117_Assignmet3/solutions.txt"
 
+
 # #### Task 1 ####
+
 
 # Task 1.0
 stemmer = PorterStemmer()
@@ -122,7 +123,7 @@ def wordFrequency(paragraphs, word):
     return fdist
 
 
-# Task 1 - run
+# Task 1 - end result
 paragraphs = paragraphSplitter(tex_file)
 paragraphList = wordRemover(paragraphs, "Gutenberg")
 tokenizedParas = tokenizeParagraphs(paragraphList)
@@ -130,15 +131,17 @@ paragraphList = lower(tokenizedParas)
 remParas = removePunctuation(paragraphList)
 paragraphList = stem(remParas)
 
-#print(paragraphList[1800])
+# word freq (freqdist)
 c = wordFrequency(remParas, "consumer")
-print(c)
+print("Word Frequency: {}".format(c))
+
 
 # #### Task 2 ####
 
+
 # creating the dictionary with the edited list of paragraphs
 dictionary = gensim.corpora.Dictionary(paragraphList)
-print(dictionary)
+#print(dictionary)
 
 # stopwords_file
 stopwords_file = "/Users/Fredrik/Documents/Skole/H19/TDT4117/TDT4117_Assignmet3/common-english-words.txt"
@@ -165,7 +168,7 @@ def stopword_id(stopwords, dictionary):
             pass
     return ids
 
-# converting the paragraphlist to bag-of-words:
+# converting the paragraphlist(corpus) to bag-of-words:
 
 
 def convert_bow(paragraphs):
@@ -178,7 +181,7 @@ bags = []
 
 # the stopword-list
 stopwords = stopwordList(stopwords_file)
-print(stopwords)
+#print(stopwords)
 
 # getting the list of stopword IDs
 stopword_ids = stopword_id(stopwords, dictionary)
@@ -187,5 +190,43 @@ stopword_ids = stopword_id(stopwords, dictionary)
 dictionary.filter_tokens(stopword_ids)
 
 # converted to BoW
-b_o_w = convert_bow(paragraphList)
+convert_bow(paragraphList)
 print(bags)
+
+
+# #### TASK 3 ####
+
+
+# Task 3.1, 3.2, 3.3
+# the TF-IDF model based on BoW
+tfidf_model = gensim.models.TfidfModel(bags)
+
+# the BoW on the following format for each word: (index, weight)
+tfidf_corpus = tfidf_model[bags]
+
+# matrix similarity of the corpus
+matrix_sim = gensim.similarities.MatrixSimilarity(tfidf_corpus)
+
+# Task 3.4
+# this will group documents and words, based on their tf-idf-weight, together into topics (serializing)
+lsi_model = gensim.models.LsiModel(tfidf_corpus, id2word=dictionary, num_topics=100)
+lsi_corpus = lsi_model[bags]
+lsi_matrix = gensim.similarities.MatrixSimilarity(lsi_corpus)
+
+# Task 3.5
+# printing the first three topics
+topic1 = lsi_model.show_topic(1)
+topic2 = lsi_model.show_topic(2)
+topic3 = lsi_model.show_topic(3)
+print(topic1)
+print("\n")
+print(topic2)
+print("\n")
+print(topic3)
+
+# The three topics are related in the way that they are all about economy
+# one possible division between the three can be:
+#   - topic1: content about the workforce and production value/cost
+#   - topic2: content about the specific produce(what is produced), the quantity and value/price
+#   - topic3: content about trade/tax and foreign affairs
+
