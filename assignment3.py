@@ -8,10 +8,8 @@ from nltk.probability import FreqDist
 
 
 tex_file = "/Users/Fredrik/Documents/Skole/H19/TDT4117/TDT4117_Assignmet3/pg3300.txt"
-solution = "/Users/Fredrik/Documents/Skole/H19/TDT4117/TDT4117_Assignmet3/solutions.txt"
 
-
-# #### Task 1 ####
+# #### TASK 1 ####
 
 
 # Task 1.0
@@ -22,14 +20,16 @@ fdist = FreqDist()
 # Task 1.1
 
 
-def openFile(file):
+def open_file(file):
     return codecs.open(file, "r", "utf-8")
 
 # Task 1.2
 
+# splits each paragraph into separate "documents"
 
-def paragraphSplitter(file):
-    fil = openFile(file)
+
+def paragraph_splitter(file):
+    fil = open_file(file)
     paragraphs = []
     paragraph = ""
     for line in fil.readlines():
@@ -44,7 +44,7 @@ def paragraphSplitter(file):
 # Task 1.3
 
 
-def wordRemover(paragraphs, word):
+def word_remover(paragraphs, word):
     paraList = []
     for p in paragraphs:
         if word.casefold() not in p.casefold():
@@ -53,13 +53,17 @@ def wordRemover(paragraphs, word):
 
 # Task 1.4
 
+# each paragraph is tokenized on " "
 
-def tokenizeParagraphs(paragraphs):
+
+def tokenize_paragraphs(paragraphs):
     for i, p in enumerate(paragraphs):
         paragraphs[i] = p.split(" ")
     return paragraphs
 
 # Task 1.5
+
+# each word in the corpus is lower-cased
 
 
 def lower(paragraphs):
@@ -72,13 +76,13 @@ def lower(paragraphs):
     return paras_lowered
 
 
-def removePunctuation(paragraphs):
+def remove_punctuation(paragraphs):
     paras = []
-    #goes through each word in the paragraph and removes whitespace, etc.
+    # goes through each word in the paragraph and removes whitespace, etc.
     for p in paragraphs:
         words = []
         for word in p:
-            temp = replaceMultiple(word, ['.',',',';',':','\r\n'], ' ')
+            temp = replace_multiple(word, ['.', ',', ';', ':', '\r\n'], ' ')
             templist = temp.split(' ')
             for i in templist:
                 if i == '':
@@ -91,7 +95,7 @@ def removePunctuation(paragraphs):
 # aiding function to remove multiple chars
 
 
-def replaceMultiple(w, toBeRemoved, r):
+def replace_multiple(w, toBeRemoved, r):
     for elem in toBeRemoved:
         if elem in w:
             w = w.replace(elem, r)
@@ -102,7 +106,7 @@ def replaceMultiple(w, toBeRemoved, r):
 
 def stem(paragraphs):
     stemmed_paras = []
-    #for each paragraph, stem each word in the paragraph
+    # for each paragraph, stem each word in the paragraph
     for p in paragraphs:
         stemmed_words = []
         for word in p:
@@ -113,9 +117,9 @@ def stem(paragraphs):
 # Task 1.7
 
 
-def wordFrequency(paragraphs, word):
-    #searching the word in question
-    #word = stemmer.stem(word)
+def word_frequency(paragraphs, word):
+    # searching the word in question and counts it
+    # word = stemmer.stem(word)
     for p in paragraphs:
         for w in p:
             if w == word:
@@ -123,24 +127,31 @@ def wordFrequency(paragraphs, word):
     return fdist
 
 
-# Task 1 - end result
-paragraphs = paragraphSplitter(tex_file)
-paragraphList = wordRemover(paragraphs, "Gutenberg")
-tokenizedParas = tokenizeParagraphs(paragraphList)
-paragraphList = lower(tokenizedParas)
-remParas = removePunctuation(paragraphList)
-paragraphList = stem(remParas)
+# Task 1 - structure and edit corpus
+paragraphs = paragraph_splitter(tex_file)
+noGuten = word_remover(paragraphs, "Gutenberg")
+tokenizedParas = tokenize_paragraphs(noGuten)
+lowered = lower(tokenizedParas)
+remParas = remove_punctuation(lowered)
+stemParas = stem(remParas)
 
-# word freq (freqdist)
-c = wordFrequency(remParas, "consumer")
+
+# runs the word_frequency-function on the documents before stemming
+c = word_frequency(remParas, "consumer")
 print("Word Frequency: {}".format(c))
 
+# runs the word_frequency-function on the documents after stemming
+d = word_frequency(stemParas, "consumer")
+print("Word Frequency: {}".format(d))
 
-# #### Task 2 ####
+# ==> works both before and after stemming
+
+
+# #### TASK 2 ####
 
 
 # creating the dictionary with the edited list of paragraphs
-dictionary = gensim.corpora.Dictionary(paragraphList)
+dictionary = gensim.corpora.Dictionary(stemParas)
 #print(dictionary)
 
 # stopwords_file
@@ -149,9 +160,9 @@ stopwords_file = "/Users/Fredrik/Documents/Skole/H19/TDT4117/TDT4117_Assignmet3/
 # creating a list of stopwords from the attached file:
 
 
-def stopwordList(stopwords_file):
+def stopword_list(stopwords_file):
     stopwordList = []
-    fil = openFile(stopwords_file)
+    fil = open_file(stopwords_file)
     stopwords_read = fil.read()
     stopwordList = stopwords_read.split(',')
     return stopwordList
@@ -180,7 +191,7 @@ def convert_bow(paragraphs):
 bags = []
 
 # the stopword-list
-stopwords = stopwordList(stopwords_file)
+stopwords = stopword_list(stopwords_file)
 #print(stopwords)
 
 # getting the list of stopword IDs
@@ -190,7 +201,7 @@ stopword_ids = stopword_id(stopwords, dictionary)
 dictionary.filter_tokens(stopword_ids)
 
 # converted to BoW
-convert_bow(paragraphList)
+convert_bow(stemParas)
 print(bags)
 
 
@@ -229,4 +240,14 @@ print(topic3)
 #   - topic1: content about the workforce and production value/cost
 #   - topic2: content about the specific produce(what is produced), the quantity and value/price
 #   - topic3: content about trade/tax and foreign affairs
+# Each topic includes the most important words in defining the topic are included
+# in the output, along with their contribution to the topic
+
+
+# #### TASK 4 ####
+
+# Task 4.1
+
+queries = []
+
 
