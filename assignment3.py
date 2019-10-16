@@ -76,7 +76,7 @@ def lower(paragraphs):
         paras_lowered.append(word_lowered)
     return paras_lowered
 
-# remove punctuation of all words in the corpus
+# remove punctuation of all words in each doc the corpus
 
 
 def remove_punctuation(paragraphs):
@@ -155,8 +155,11 @@ split = paragraph_splitter(tex_file)
 noGuten = word_remover(split, "Gutenberg")
 tokenizedParas = tokenize_paragraphs(noGuten)
 lowered = lower(tokenizedParas)
-remParas = remove_punctuation(lowered)
+remParas = remove_punctuation(lowered)s
 stemParas = stem(remParas)
+print("Printout of the stemmed paragraphs (example):\n")
+print("{},{}".format(stemParas[14],stemParas[37]))
+
 
 
 # runs the word_frequency-function with the given word on the documents
@@ -280,7 +283,7 @@ def bow_to_tfidf(index, dictionary):
 
 
 tf_form = bow_to_tfidf(tfidf_index, dictionary)
-print("TF-IDF representation of the query: \n{}\n\n".format(tf_form))
+print("TF-IDF representation of the query: \n{}\n".format(tf_form))
 
 # Task 4.3
 
@@ -292,6 +295,7 @@ docsim = enumerate(matrix_sim[tfidf_index])
 top_res = sorted(docsim, key=lambda x: x[1], reverse=True)[:3]
 
 # return the top 3 most relevant docs
+print("The top 3 most relevant documents:")
 for res in top_res:
     doc = noGuten[res[0]]
     print("\n[Document: {}]".format(res[0]))
@@ -306,11 +310,10 @@ for res in top_res:
 
 # Finds the 3 most significant topics
 lsi_query = lsi_model[tfidf_index]
-topic_sort = sorted(lsi_query, key=lambda kv: -abs(kv[1]))[:3]
-print("Top 3 topics with most significant weight:")
+topic_sort = sorted(lsi_query, key=lambda x: -abs(x[1]))[:3]
+print("\nThe top 3 topics with most significant weight:\n")
 for topic in enumerate(topic_sort):
     t = topic[1][0]
-    print("[Topic %d]" % t)
+    print("[Topic {}]".format(t))
     print(lsi_model.show_topics()[t])
-    print("\n---\n")
 
