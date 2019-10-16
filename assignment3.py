@@ -3,7 +3,6 @@ import codecs
 import gensim
 import nltk
 import string
-from itertools import groupby
 from nltk.stem.porter import PorterStemmer
 from nltk.probability import FreqDist
 
@@ -154,7 +153,6 @@ def word_frequency(paragraphs, word):
 # Task 1 - structure and edit corpus
 split = paragraph_splitter(tex_file)
 noGuten = word_remover(split, "Gutenberg")
-print("aaa{}".format(noGuten[12]))
 tokenizedParas = tokenize_paragraphs(noGuten)
 lowered = lower(tokenizedParas)
 remParas = remove_punctuation(lowered)
@@ -170,7 +168,7 @@ print("Word Frequency ({}): {}".format(w,c))
 # #### TASK 2 ####
 
 
-# stop words extracted from the common-english-words.txt
+# stop words extracted from common-english-words.txt
 stopwords = 'a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,' \
              'cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,' \
              'how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,' \
@@ -178,13 +176,15 @@ stopwords = 'a,able,about,across,after,all,almost,also,am,among,an,and,any,are,a
              'their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,' \
              'who,whom,why,will,with,would,yet,you,your'
 
-stop_word_list = stopwords.split(',')
+stopword_list = stopwords.split(',')
 
 # Building a dictionary based on the corpus from Task 1
 dictionary = gensim.corpora.Dictionary(stemParas)
 
-# finds the ids for the stopwords from the dictionary
-def stop_word_ids(stopwords, dictionary):
+# Finds the ids for the stopwords from the dictionary
+
+
+def stopword_ids(stopwords, dictionary):
     ids = []
     for word in stopwords:
         try:
@@ -195,7 +195,7 @@ def stop_word_ids(stopwords, dictionary):
 
 
 # list of the ids
-stopword_ids = stop_word_ids(stop_word_list, dictionary)
+stopword_ids = stopword_ids(stopword_list, dictionary)
 
 # filter out the "bad ids" from the dictionary
 dictionary.filter_tokens(stopword_ids)
@@ -259,10 +259,10 @@ def preprocessing(query):
 
 # Task 4.1
 #preprocessing of the query
-query = "How taxes influence Economics?"
-query = preprocessing(query)
+q = "How taxes influence Economics?"
+query = preprocessing(q)
 query = dictionary.doc2bow(query)
-print(query)
+#print(query)
 
 # Task 4.2
 # BoW to TF-IDF
@@ -291,7 +291,6 @@ docsim = enumerate(matrix_sim[tfidf_index])
 # sorting the docs
 top_res = sorted(docsim, key=lambda x: x[1], reverse=True)[:3]
 
-
 # return the top 3 most relevant docs
 for res in top_res:
     doc = noGuten[res[0]]
@@ -301,4 +300,17 @@ for res in top_res:
             print(doc[line])
         except:
             pass
+
+
+# Task 4.4
+
+# Finds the 3 most significant topics
+lsi_query = lsi_model[tfidf_index]
+topic_sort = sorted(lsi_query, key=lambda kv: -abs(kv[1]))[:3]
+print("Top 3 topics with most significant weight:")
+for topic in enumerate(topic_sort):
+    t = topic[1][0]
+    print("[Topic %d]" % t)
+    print(lsi_model.show_topics()[t])
+    print("\n---\n")
 
