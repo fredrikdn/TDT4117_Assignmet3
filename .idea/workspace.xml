@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac5a7f52-d88c-46c3-a743-0fda4f27bdce" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assignment3.py" beforeDir="false" afterPath="$PROJECT_DIR$/assignment3.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -62,11 +61,11 @@
               <caret line="158" column="26" lean-forward="true" selection-start-line="158" selection-start-column="26" selection-end-line="158" selection-end-column="26" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1571243215023" expanded="true" signature="1760:2190" ph="..." />
-                <marker date="1571243215023" expanded="true" signature="1933:2190" ph="..." />
-                <marker date="1571243215023" expanded="true" signature="2233:2235" ph="..." />
-                <marker date="1571243215023" expanded="true" signature="2429:2818" ph="..." />
-                <marker date="1571243215023" expanded="true" signature="2715:2818" ph="..." />
+                <marker date="1571243255013" expanded="true" signature="1760:2190" ph="..." />
+                <marker date="1571243255013" expanded="true" signature="1933:2190" ph="..." />
+                <marker date="1571243255013" expanded="true" signature="2233:2235" ph="..." />
+                <marker date="1571243255013" expanded="true" signature="2429:2818" ph="..." />
+                <marker date="1571243255013" expanded="true" signature="2715:2818" ph="..." />
               </folding>
             </state>
           </provider>
@@ -355,11 +354,11 @@
           <caret line="158" column="26" lean-forward="true" selection-start-line="158" selection-start-column="26" selection-end-line="158" selection-end-column="26" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1571243215023" expanded="true" signature="1760:2190" ph="..." />
-            <marker date="1571243215023" expanded="true" signature="1933:2190" ph="..." />
-            <marker date="1571243215023" expanded="true" signature="2233:2235" ph="..." />
-            <marker date="1571243215023" expanded="true" signature="2429:2818" ph="..." />
-            <marker date="1571243215023" expanded="true" signature="2715:2818" ph="..." />
+            <marker date="1571243255013" expanded="true" signature="1760:2190" ph="..." />
+            <marker date="1571243255013" expanded="true" signature="1933:2190" ph="..." />
+            <marker date="1571243255013" expanded="true" signature="2233:2235" ph="..." />
+            <marker date="1571243255013" expanded="true" signature="2429:2818" ph="..." />
+            <marker date="1571243255013" expanded="true" signature="2715:2818" ph="..." />
           </folding>
         </state>
       </provider>

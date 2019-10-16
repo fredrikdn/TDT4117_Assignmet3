@@ -155,7 +155,7 @@ split = paragraph_splitter(tex_file)
 noGuten = word_remover(split, "Gutenberg")
 tokenizedParas = tokenize_paragraphs(noGuten)
 lowered = lower(tokenizedParas)
-remParas = remove_punctuation(lowered)s
+remParas = remove_punctuation(lowered)
 stemParas = stem(remParas)
 print("Printout of the stemmed paragraphs (example):\n")
 print("{},{}".format(stemParas[14],stemParas[37]))
